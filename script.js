@@ -151,48 +151,24 @@ function startPractice() {
 }
 
 function generatePracticeSet(selectedConditions, requestedCount) {
-    const images = [];
-    
-    // Calculate total available images
-    const totalAvailable = selectedConditions.reduce((sum, c) => sum + c.images.length, 0);
-    
-    if (requestedCount >= totalAvailable) {
-        // Use all images from all selected conditions
-        selectedConditions.forEach(condition => {
-            condition.images.forEach(imageName => {
-                images.push({
-                    path: `${BASE_PATH}/${condition.folder}/${imageName}`,
-                    condition: condition.name
-                });
+    const allImages = [];
+
+    selectedConditions.forEach(condition => {
+        condition.images.forEach(imageName => {
+            allImages.push({
+                path: `${BASE_PATH}/${condition.folder}/${imageName}`,
+                condition: condition.name
             });
         });
-    } else {
-        // Randomly select images from each condition
-        const imagesPerCondition = Math.floor(requestedCount / selectedConditions.length);
-        let remaining = requestedCount % selectedConditions.length;
-        
-        selectedConditions.forEach(condition => {
-            let count = imagesPerCondition;
-            if (remaining > 0) {
-                count++;
-                remaining--;
-            }
-            
-            // Get random images from this condition
-            const availableImages = [...condition.images];
-            shuffleArray(availableImages);
-            
-            for (let i = 0; i < Math.min(count, condition.images.length); i++) {
-                images.push({
-                    path: `${BASE_PATH}/${condition.folder}/${availableImages[i]}`,
-                    condition: condition.name
-                });
-            }
-        });
-    }
-    
-    return images;
+    });
+
+    // Pure randomness happens here
+    shuffleArray(allImages);
+
+    // Take requested number (or all if fewer available)
+    return allImages.slice(0, requestedCount);
 }
+
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
