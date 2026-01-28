@@ -151,23 +151,43 @@ function startPractice() {
 }
 
 function generatePracticeSet(selectedConditions, requestedCount) {
-    const allImages = [];
+    const images = [];
+    const numConditions = selectedConditions.length;
 
-    selectedConditions.forEach(condition => {
-        condition.images.forEach(imageName => {
-            allImages.push({
-                path: `${BASE_PATH}/${condition.folder}/${imageName}`,
+    // Base number per condition
+    const baseCount = Math.floor(requestedCount / numConditions);
+    let remainder = requestedCount % numConditions;
+
+    // Randomize which conditions get the extra image
+    const shuffledConditions = [...selectedConditions];
+    shuffleArray(shuffledConditions);
+
+    shuffledConditions.forEach(condition => {
+        let count = baseCount;
+
+        if (remainder > 0) {
+            count++;
+            remainder--;
+        }
+
+        // Randomize images within the condition
+        const availableImages = [...condition.images];
+        shuffleArray(availableImages);
+
+        for (let i = 0; i < Math.min(count, availableImages.length); i++) {
+            images.push({
+                path: `${BASE_PATH}/${condition.folder}/${availableImages[i]}`,
                 condition: condition.name
             });
-        });
+        }
     });
 
-    // Pure randomness happens here
-    shuffleArray(allImages);
+    // Final shuffle so conditions are mixed
+    shuffleArray(images);
 
-    // Take requested number (or all if fewer available)
-    return allImages.slice(0, requestedCount);
+    return images;
 }
+
 
 
 function shuffleArray(array) {
