@@ -1,0 +1,303 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.screen {
+    display: none;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.screen.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    border-radius: 12px;
+    padding: 2.5rem;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    color: #667eea;
+    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.condition-list {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.condition-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.condition-item:hover {
+    background-color: #f5f5f5;
+}
+
+.condition-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.condition-info {
+    flex: 1;
+}
+
+.condition-name {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.condition-count {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.select-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.count-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.count-input label {
+    font-weight: 500;
+    color: #555;
+}
+
+.count-input input {
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.count-input input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: #667eea;
+    color: white;
+}
+
+button:hover {
+    background-color: #5568d3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.start-button {
+    background-color: #764ba2;
+    font-size: 1.1rem;
+    padding: 1rem 2rem;
+}
+
+.start-button:hover {
+    background-color: #653a8c;
+}
+
+/* Practice Screen */
+.practice-container {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 900px;
+    width: 100%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.image-container {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.answer-container {
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.answer {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #764ba2;
+    text-align: center;
+    transition: opacity 0.3s;
+}
+
+.answer.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.practice-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.practice-controls button {
+    flex: 1;
+    max-width: 200px;
+}
+
+#prevBtn, #nextBtn {
+    background-color: #555;
+}
+
+#prevBtn:hover, #nextBtn:hover {
+    background-color: #444;
+}
+
+#revealBtn {
+    background-color: #764ba2;
+}
+
+#revealBtn:hover {
+    background-color: #653a8c;
+}
+
+/* Completion Screen */
+.completion-message {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #555;
+    margin: 2rem 0;
+}
+
+.completion-message span {
+    color: #764ba2;
+    font-weight: 700;
+}
+
+.completion-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.completion-controls button {
+    min-width: 180px;
+}
+
+/* Scrollbar */
+.condition-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.condition-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.condition-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.condition-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
