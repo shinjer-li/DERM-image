@@ -1,48 +1,82 @@
-// Condition data - Update this with your actual folder structure and image counts
-const conditions = [
-    { folder: "AcneVulgaris", name: "Acne Vulgaris", imageCount: 8 },
-    { folder: "ActinicKeratosis", name: "Actinic Keratosis", imageCount: 7 },
-    { folder: "Alopecia", name: "Alopecia", imageCount: 6 },
-    { folder: "AtopicDermatitis", name: "Atopic Dermatitis", imageCount: 9 },
-    { folder: "BCC", name: "Basal Cell Carcinoma (BCC)", imageCount: 10 },
-    { folder: "BullousDisease", name: "Bullous Disease", imageCount: 7 },
-    { folder: "Cellulitis", name: "Cellulitis", imageCount: 8 },
-    { folder: "ContactDermatitis", name: "Contact Dermatitis", imageCount: 6 },
-    { folder: "Dermatofibroma", name: "Dermatofibroma", imageCount: 6 },
-    { folder: "DermatomyositisRash", name: "Dermatomyositis Rash", imageCount: 8 },
-    { folder: "DrugInducedHypersensitivitySyndrome", name: "Drug Induced Hypersensitivity Syndrome (DIHS)", imageCount: 7 },
-    { folder: "Erysipelas", name: "Erysipelas", imageCount: 6 },
-    { folder: "ErythemaMultiforme", name: "Erythema Multiforme", imageCount: 8 },
-    { folder: "ErythemaNodosum", name: "Erythema Nodosum", imageCount: 7 },
-    { folder: "HidradenitisSuppurativa", name: "Hidradenitis Suppurativa", imageCount: 9 },
-    { folder: "HSV", name: "Herpes Simplex Virus (HSV)", imageCount: 8 },
-    { folder: "IchthyosisVulgaris", name: "Ichthyosis Vulgaris", imageCount: 6 },
-    { folder: "Impetigo", name: "Impetigo", imageCount: 7 },
-    { folder: "Langerhans", name: "Langerhans Cell Histiocytosis", imageCount: 6 },
-    { folder: "LichenPlanus", name: "Lichen Planus", imageCount: 8 },
-    { folder: "Mastocytosis-UP", name: "Mastocytosis (Urticaria Pigmentosa)", imageCount: 7 },
-    { folder: "Melanoma", name: "Melanoma", imageCount: 10 },
-    { folder: "Molluscum", name: "Molluscum Contagiosum", imageCount: 8 },
-    { folder: "Mpox", name: "Mpox (Monkeypox)", imageCount: 7 },
-    { folder: "PemphigusVulgaris", name: "Pemphigus Vulgaris", imageCount: 8 },
-    { folder: "PolymorphousLightEruption", name: "Polymorphous Light Eruption (PMLE)", imageCount: 7 },
-    { folder: "Psoriasis", name: "Psoriasis", imageCount: 9 },
-    { folder: "Rosacea", name: "Rosacea", imageCount: 8 },
-    { folder: "SCC", name: "Squamous Cell Carcinoma (SCC)", imageCount: 9 },
-    { folder: "SeborrheicKeratosis", name: "Seborrheic Keratosis", imageCount: 7 },
-    { folder: "SJS-TEN", name: "Stevens-Johnson Syndrome / Toxic Epidermal Necrolysis (SJS-TEN)", imageCount: 8 },
-    { folder: "Urticaria", name: "Urticaria", imageCount: 7 },
-    { folder: "VaricellaZoster", name: "Varicella Zoster", imageCount: 8 }
-];
-
+// This will be populated by scanning the DERM folder
+let conditions = [];
 let practiceImages = [];
 let currentIndex = 0;
 let answerVisible = false;
+
+// Base path to your DERM folder
+const BASE_PATH = './DERM';
+
+// Folder name to formatted name mapping
+const folderNameMap = {
+    'AcneVulgaris': 'Acne Vulgaris',
+    'ActinicKeratosis': 'Actinic Keratosis',
+    'Alopecia': 'Alopecia',
+    'AtopicDermatitis': 'Atopic Dermatitis',
+    'BCC': 'Basal Cell Carcinoma (BCC)',
+    'BullousDisease': 'Bullous Disease',
+    'Cellulitis': 'Cellulitis',
+    'ContactDermatitis': 'Contact Dermatitis',
+    'Dermatofibroma': 'Dermatofibroma',
+    'DermatomyositisRash': 'Dermatomyositis Rash',
+    'DrugInducedHypersensitivitySyndrome': 'Drug Induced Hypersensitivity Syndrome (DIHS)',
+    'Erysipelas': 'Erysipelas',
+    'ErythemaMultiforme': 'Erythema Multiforme',
+    'ErythemaNodosum': 'Erythema Nodosum',
+    'HidradenitisSuppurativa': 'Hidradenitis Suppurativa',
+    'HSV': 'Herpes Simplex Virus (HSV)',
+    'IchthyosisVulgaris': 'Ichthyosis Vulgaris',
+    'Impetigo': 'Impetigo',
+    'Langerhans': 'Langerhans Cell Histiocytosis',
+    'LichenPlanus': 'Lichen Planus',
+    'Mastocytosis-UP': 'Mastocytosis (Urticaria Pigmentosa)',
+    'Melanoma': 'Melanoma',
+    'Molluscum': 'Molluscum Contagiosum',
+    'Mpox': 'Mpox (Monkeypox)',
+    'PemphigusVulgaris': 'Pemphigus Vulgaris',
+    'PolymorphousLightEruption': 'Polymorphous Light Eruption (PMLE)',
+    'Psoriasis': 'Psoriasis',
+    'Rosacea': 'Rosacea',
+    'SCC': 'Squamous Cell Carcinoma (SCC)',
+    'SeborrheicKeratosis': 'Seborrheic Keratosis',
+    'SJS-TEN': 'Stevens-Johnson Syndrome / Toxic Epidermal Necrolysis (SJS-TEN)',
+    'Urticaria': 'Urticaria',
+    'VaricellaZoster': 'Varicella Zoster'
+};
+
+// imageFiles will be loaded from imageConfig.js
+// Make sure to include <script src="imageConfig.js"></script> in your HTML
+
+// Load folder structure and images
+function loadConditions() {
+    const folders = Object.keys(folderNameMap);
+    
+    folders.forEach(folder => {
+        const images = imageFiles[folder] || [];
+        if (images.length > 0) {
+            conditions.push({
+                folder: folder,
+                name: folderNameMap[folder],
+                images: images
+            });
+        }
+    });
+    
+    // Sort conditions alphabetically by name
+    conditions.sort((a, b) => a.name.localeCompare(b.name));
+    
+    initHome();
+}
 
 // Initialize the home screen
 function initHome() {
     const conditionList = document.getElementById('conditionList');
     conditionList.innerHTML = '';
+    
+    if (conditions.length === 0) {
+        conditionList.innerHTML = '<p style="text-align: center; color: #888; padding: 2rem;">No conditions loaded. Please run scan_images.py to generate image configuration.</p>';
+        return;
+    }
     
     conditions.forEach((condition, index) => {
         const item = document.createElement('div');
@@ -53,7 +87,7 @@ function initHome() {
             <input type="checkbox" id="condition-${index}" onclick="event.stopPropagation()">
             <div class="condition-info">
                 <div class="condition-name">${condition.name}</div>
-                <div class="condition-count">${condition.imageCount} images</div>
+                <div class="condition-count">${condition.images.length} images</div>
             </div>
         `;
         
@@ -120,17 +154,17 @@ function generatePracticeSet(selectedConditions, requestedCount) {
     const images = [];
     
     // Calculate total available images
-    const totalAvailable = selectedConditions.reduce((sum, c) => sum + c.imageCount, 0);
+    const totalAvailable = selectedConditions.reduce((sum, c) => sum + c.images.length, 0);
     
     if (requestedCount >= totalAvailable) {
         // Use all images from all selected conditions
         selectedConditions.forEach(condition => {
-            for (let i = 1; i <= condition.imageCount; i++) {
+            condition.images.forEach(imageName => {
                 images.push({
-                    path: `C:/Users/lijer/Downloads/DERM/${condition.folder}/image${i}.jpg`,
+                    path: `${BASE_PATH}/${condition.folder}/${imageName}`,
                     condition: condition.name
                 });
-            }
+            });
         });
     } else {
         // Randomly select images from each condition
@@ -145,12 +179,12 @@ function generatePracticeSet(selectedConditions, requestedCount) {
             }
             
             // Get random images from this condition
-            const availableIndices = Array.from({ length: condition.imageCount }, (_, i) => i + 1);
-            shuffleArray(availableIndices);
+            const availableImages = [...condition.images];
+            shuffleArray(availableImages);
             
-            for (let i = 0; i < Math.min(count, condition.imageCount); i++) {
+            for (let i = 0; i < Math.min(count, condition.images.length); i++) {
                 images.push({
-                    path: `C:/Users/lijer/Downloads/DERM/${condition.folder}/image${availableIndices[i]}.jpg`,
+                    path: `${BASE_PATH}/${condition.folder}/${availableImages[i]}`,
                     condition: condition.name
                 });
             }
@@ -250,4 +284,6 @@ function showScreen(screenId) {
 }
 
 // Initialize on page load
-window.onload = initHome;
+window.onload = () => {
+    loadConditions();
+};

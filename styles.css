@@ -224,7 +224,7 @@ button:active {
     font-weight: 700;
     color: #764ba2;
     text-align: center;
-    transition: opacity 0.3s;
+    /* transition: opacity 0.3s; */
 }
 
 .answer.hidden {
